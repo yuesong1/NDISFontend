@@ -10,7 +10,23 @@ export default function Home () {
   const history = useNavigate();
   
   function addNewPlan(history) {
-    history('../newPlan')
+    const payload = JSON.stringify({
+      name: 'Jan',
+    });
+    //change the port as you want
+    const result = fetch('http://localhost:80/forms', {
+      method: 'GET', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      }
+    });
+    result.then(ret => {
+      ret.json().then(data => {
+        console.log(data)
+      })
+    })
+    
   }
   
   return (

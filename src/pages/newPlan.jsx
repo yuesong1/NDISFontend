@@ -15,9 +15,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MultipleSelect from '../components/mutiSelect';
 import { MultiSelectUnstyled } from '@mui/base';
 
-function submitPlan(history){
-  history('../feedback')
-}
+
 
 export default function NewPlan () {
 
@@ -34,6 +32,9 @@ export default function NewPlan () {
     setDisability(event.target.value);
   };
 
+  function submitPlan(history){
+    history('../feedback')
+  }
 
   return (
     <div style={{ width: '100%' }}>

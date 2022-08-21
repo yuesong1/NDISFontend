@@ -5,7 +5,8 @@ import Header from './components/header';
 import Main from './pages/main';
 import NewPlan from './pages/newPlan';
 import Feedback from './pages/feedback';
-
+// 
+import TestCanvasAPI from './pages/testCanvasAPI';
 
 function App () {
   return (
@@ -16,6 +17,7 @@ function App () {
         <Route path="/" element={<Main/>} />
         <Route path="/newPlan" element={<NewPlan/>} />
         <Route path="/feedback" element={<Feedback/>} />
+        <Route path="/api" element={<TestCanvasAPI/>}/>
       </Routes>
     </BrowserRouter>
   </div>

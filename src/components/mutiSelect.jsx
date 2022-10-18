@@ -5,6 +5,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import PropTypes from 'prop-types';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -43,7 +44,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-export default function MultipleSelect() {
+export default function MultipleSelect({valueChange}) {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
 
@@ -55,6 +56,7 @@ export default function MultipleSelect() {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
+    valueChange(event, personName);
   };
 
   return (
@@ -83,4 +85,8 @@ export default function MultipleSelect() {
       </FormControl>
     </div>
   );
+}
+
+MultipleSelect.propTypes = {
+  valueChange: PropTypes.func,
 }

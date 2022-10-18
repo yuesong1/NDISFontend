@@ -23,24 +23,53 @@ export default function NewPlan () {
   const [newParticipantName, setNewParticipantName] = React.useState('');
   const [newFamilyName, setNewFamilyName] = React.useState('');
   const [email, setEmail] = React.useState('');
-  const [disability, setDisability] = React.useState('');
+  const [disability, setDisability] = React.useState([]);
   const [description, setDescription] = React.useState('');
   const [predictors, setPredictors] = React.useState('');
   const [analysis, setAnalysis] = React.useState('');
   const history = useNavigate();
-  const handleChange = (event) => {
-    setDisability(event.target.value);
+  const valueChange = (event, name) => {
+    console.log(event.target.value)
+    setDisability((event.target.value).toString());
+    console.log((event.target.value).toString())
   };
 
-  function submitPlan(history){
-    history('../feedback')
+  function submitPlan(newPractitionerName, newParticipantName, newFamilyName, email,disability, description, predictors, analysis, history){
+    const payload = JSON.stringify({
+      newPractitionerName: newPractitionerName,
+      newParticipantName: newParticipantName,
+      newFamilyName: newFamilyName,
+      email: email,
+      disability: disability,
+      description: description,
+      predictors: predictors,
+      analysis: analysis
+    });
+    const result = fetch('http://localhost:500/forms', {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: payload,
+    });
+    result.then(data => {
+      if (data.status === 200) {
+        data.json().then(res => {
+          alert('Add new plan successfully')
+          history('../feedback')
+        })
+      } else if (data.status === 400) {
+        alert('Invalid Input')
+      }
+    })
   }
 
   return (
     <div style={{ width: '100%' }}>
       <div>
         <h2>Basic Information of the plan</h2>
-        <Box 
+        <Box
           component="form"
           sx={{
             '& .MuiTextField-root': { m: 1, width: '25ch' },
@@ -48,7 +77,7 @@ export default function NewPlan () {
           noValidate
           autoComplete="off"
         >
-          <div style={{'align-item' : 'center'}}>
+          <div style={{'alignItem' : 'center'}}>
           <TextField
             id="participantName" label="Partictipant Name" variant="outlined" placeholder="Name of participant"
             onChange={(e) => setNewParticipantName(e.target.value)} />
@@ -72,15 +101,15 @@ export default function NewPlan () {
             component="form"
             sx={{
               '& > :not(style)': { m: 3, width: '80%',  },
-              
+
             }}
             noValidate
-            autoComplete="off"      
+            autoComplete="off"
           >
             Select all disibilites
             <br/>
-            <MultipleSelect/>
-
+            <MultipleSelect valueChange={valueChange}/>
+            console.log(valueChange)
           <br/>
           Please provide some observable and measurable terms on describing the behaviour(s) of concern:
             <TextField
@@ -112,8 +141,8 @@ export default function NewPlan () {
               rows={4}
               onChange={(e) => setAnalysis(e.target.value)}
             />
-          </Box></div >  
-        <Button style={{ background: '#9c27b0', color: '#fff', margin: '3'}} onClick={() => submitPlan(history)}> Submit</Button>
+          </Box></div >
+        <Button style={{ background: '#9c27b0', color: '#fff', margin: '3'}} onClick={() => submitPlan(newPractitionerName, newParticipantName, newFamilyName, email,disability, description, predictors, analysis, history)}> Submit</Button>
     </div>
 
   )

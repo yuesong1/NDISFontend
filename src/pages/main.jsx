@@ -9,7 +9,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import cookie from "react-cookies";
+import {Cookies} from "react-cookie";
+//import cookies from "react-cookies";
 import {token} from "../utils/Credentials";
 import { publicKey } from '../utils/Credentials';
 import JSEncrypt from 'jsencrypt';
@@ -41,7 +42,7 @@ const sampleList = [
   },
 ]
 
-
+var cookie=new Cookies()
 export default function Home () {
 
   const history = useNavigate();
@@ -74,16 +75,20 @@ export default function Home () {
 
     //   })
     // })
-    if (cookie.load("token") == null){
-    	     cookie.save("Yes", token)
-    	     console.log(cookie.load("Yes"))
+    
+    if (cookie.get("token") == null){
+    
+          cookie.set("Yes",token,{secure:true,sameSite:'none'})
+    
+    	    // cookie.save("Yes", token,{secure:true,sameSite:'none'})
+    	    
     	     //let cookieTime = new Date(new Date().getTime + 5 * 1000);
     }
-    // if (cookie.load("Yes") == null) {
-    //   alert('Token is missing, you have no access')
-    //   history('../')
-    // }
-    var encrypted = encrypt.encrypt(cookie.load("Yes"))
+    if ( cookie.get("Yes") == null) {
+      alert('Token is missing, you have no access')
+      history('../')
+    }
+    var encrypted = encrypt.encrypt(cookie.get("Yes"))
      const result = fetch(getAllPatient((localStorage.getItem("pracId"))), {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       headers: {
@@ -105,11 +110,11 @@ export default function Home () {
   //Create New BSP of a Patient
   function addNewPlan() {
 
-    if (cookie.load("Yes") == null) {
+    if (cookie.get("Yes") == null) {
       alert('Token is missing, you have no access')
       history('../')
     }
-    var encrypted = encrypt.encrypt(cookie.load("Yes"))
+    var encrypted = encrypt.encrypt(cookie.get("Yes"))
     const result = fetch(getURLCreateNewBsp(), {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       headers: {

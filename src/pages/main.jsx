@@ -79,10 +79,10 @@ export default function Home () {
     	     console.log(cookie.load("Yes"))
     	     //let cookieTime = new Date(new Date().getTime + 5 * 1000);
     }
-    if (cookie.load("Yes") == null) {
-      alert('Token is missing, you have no access')
-      history('../')
-    }
+    // if (cookie.load("Yes") == null) {
+    //   alert('Token is missing, you have no access')
+    //   history('../')
+    // }
     var encrypted = encrypt.encrypt(cookie.load("Yes"))
      const result = fetch(getAllPatient((localStorage.getItem("pracId"))), {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
